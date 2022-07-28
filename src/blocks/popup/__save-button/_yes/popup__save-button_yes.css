@@ -1,0 +1,9 @@
+.popup__save-button_yes {
+  margin: 0 36px 36px 36px;
+}
+
+@media screen and (max-width: 767px) {
+  .popup__save-button_yes {
+    margin: 0 22px 36px;
+  }
+}
