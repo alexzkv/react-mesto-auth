@@ -4,7 +4,7 @@ export default function ImagePopup({ card, name, onClose }) {
       <div className="popup__container popup__container_open_img">
         <button
           type="button"
-          aria-label="Закрыть форму"
+          aria-label="Закрыть"
           className="popup__close"
           onClick={onClose}
         />
