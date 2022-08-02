@@ -1,0 +1,13 @@
+.register-login__button {
+  margin: 186px auto 112px;
+  padding: 15px 84px;
+  width: 358px;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.2;
+  text-align: center;
+  color: #000;
+  background: #FFF;
+  border-radius: 2px;
+  border: none
+}

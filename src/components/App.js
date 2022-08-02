@@ -1,6 +1,7 @@
 import "../index.css";
 import { useState, useEffect } from "react";
 import { Redirect, Route, Switch } from 'react-router-dom';
+import CurrentUserContext from "../contexts/CurrentUserContext";
 import api from "../utils/Api";
 import Header from "./Header";
 import Main from "./Main";
@@ -10,9 +11,9 @@ import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
-import CurrentUserContext from "../contexts/CurrentUserContext";
 import Register from "./Register";
 import Login from "./Login";
+import ProtectedRoute from "./ProtectedRoute";
 
 export default function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
@@ -113,63 +114,66 @@ export default function App() {
 
   return (
     <div className="page">
+      <Header />
       <Switch>
+        <ProtectedRoute 
+          exact path="/"
+        component={Main}
+        >
+        </ProtectedRoute>
         <Route path="/sign-up">
           <Register />
         </Route>
         <Route path="/sign-in">
           <Login />
         </Route>
-        <Route>
-          <CurrentUserContext.Provider value={currentUser}>
-            <Header />
-            <Main 
-              onEditAvatar={handleEditAvatarClick}
-              onEditProfile={handleEditProfileClick}
-              onAddPlace={handleAddPlaceClick}
-              onCardClick={handleCardClick}
-              onCardLike={handleCardLike}
-              onCardDelete={handleCardDelete}
-              cards={cards}
-            />
-            <Footer />
-            <PopupWithForm 
-              className="popup popup_type_confirm"
-              name="confirm"
-              title="Вы уверены?"
-              ariaLabel="Да"
-              textButton="Да"
-              onClose={closeAllPopups}
-            >
-            </PopupWithForm>
-            <ImagePopup
-              name={"open-card"}
-              card={selectedCard}
-              onClose={closeAllPopups}
-            />
-            <EditProfilePopup
-              isOpen={isEditProfilePopupOpen}
-              onClose={closeAllPopups}
-              onUpdateUser={handleUpdateUser}
-              isLoading={isLoading}
-            />
-            <EditAvatarPopup 
-              isOpen={isEditAvatarPopupOpen} 
-              onClose={closeAllPopups} 
-              onUpdateAvatar={handleUpdateAvatar}
-              isLoading={isLoading}
-            />
-            <AddPlacePopup
-              isOpen={isAddPlacePopupOpen} 
-              onClose={closeAllPopups} 
-              onAddPlace={handleAddPlaceSubmit}
-              isLoading={isLoading}
-            />
-          </CurrentUserContext.Provider>
-        </Route>
-        <Route>
-          {isLoggedIn ? <Redirect to="/"/> : <Redirect to="/sign-in"/>}
-        </Route>
+
+
+      <CurrentUserContext.Provider value={currentUser}>
+
+        <Main 
+          onEditAvatar={handleEditAvatarClick}
+          onEditProfile={handleEditProfileClick}
+          onAddPlace={handleAddPlaceClick}
+          onCardClick={handleCardClick}
+          onCardLike={handleCardLike}
+          onCardDelete={handleCardDelete}
+          cards={cards}
+        />
+        <Footer />
+        <PopupWithForm 
+          className="popup popup_type_confirm"
+          name="confirm"
+          title="Вы уверены?"
+          ariaLabel="Да"
+          textButton="Да"
+          onClose={closeAllPopups}
+        >
+        </PopupWithForm>
+        <ImagePopup
+          name={"open-card"}
+          card={selectedCard}
+          onClose={closeAllPopups}
+        />
+        <EditProfilePopup
+          isOpen={isEditProfilePopupOpen}
+          onClose={closeAllPopups}
+          onUpdateUser={handleUpdateUser}
+          isLoading={isLoading}
+        />
+        <EditAvatarPopup 
+          isOpen={isEditAvatarPopupOpen} 
+          onClose={closeAllPopups} 
+          onUpdateAvatar={handleUpdateAvatar}
+          isLoading={isLoading}
+        />
+        <AddPlacePopup
+          isOpen={isAddPlacePopupOpen} 
+          onClose={closeAllPopups} 
+          onAddPlace={handleAddPlaceSubmit}
+          isLoading={isLoading}
+        />
+      </CurrentUserContext.Provider>
       </Switch>
     </div>  
   );

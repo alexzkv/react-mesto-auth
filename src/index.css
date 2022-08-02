@@ -50,3 +50,11 @@
 @import url(../src/blocks/footer/footer.css);
 @import url(../src/blocks/footer/__title/footer__title.css);
 
+@import url(../src/blocks/register-login/register-login.css);
+@import url(../src/blocks/register-login/__title/register-login__title.css);
+@import url(../src/blocks/register-login/__form/register__form.css);
+@import url(../src/blocks/register-login/__input/register-login__input.css);
+@import url(../src/blocks/register-login//__button/register-login__button.css);
+@import url(../src/blocks/register-login/__welcome/register-login__welcome.css);
+@import url(../src/blocks/register-login/__button/_type_register/register-login__button_type_register.css);
+

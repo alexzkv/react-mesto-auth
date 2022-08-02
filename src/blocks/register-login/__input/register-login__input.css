@@ -1,25 +1,22 @@
-.popup__input {
+.register-login__input {
   width: 358px;
-  margin: 0 auto;
-  padding: 8px 0;
+  margin: 0 auto 30px;
+  padding: 0;
+  padding-bottom: 8px;
   font-weight: 400;
   font-size: 14px;
   line-height: 1.2;
+  color: #CCC;
+  background: rgba(0,0,0,0.5);
   box-sizing: border-box;
   border-style: none;
-  border-bottom: 1px solid rgba(0, 0, 0, .2);
+  border-bottom: 2px solid #CCC;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
 }
 
-.popup__input:focus {
+.register-login__input:focus {
   outline: 0;
   outline-offset: 0;
-}
-
-@media screen and (max-width: 767px) {
-  .popup__input {
-    max-width: 238px;
-  }
 }
