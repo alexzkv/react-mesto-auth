@@ -23,7 +23,7 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
   const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen ||
   isAddPlacePopupOpen || selectedCard;
 
@@ -116,10 +116,19 @@ export default function App() {
     <div className="page">
       <Header />
       <Switch>
-        <ProtectedRoute 
-          exact path="/"
+        <ProtectedRoute
+        exact path="/"
+        loggedIn={loggedIn}
         component={Main}
+        onEditAvatar={handleEditAvatarClick}
+        onEditProfile={handleEditProfileClick}
+        onAddPlace={handleAddPlaceClick}
+        onCardClick={handleCardClick}
+        onCardLike={handleCardLike}
+        onCardDelete={handleCardDelete}
+        cards={cards}
         >
+
         </ProtectedRoute>
         <Route path="/sign-up">
           <Register />
@@ -127,19 +136,11 @@ export default function App() {
         <Route path="/sign-in">
           <Login />
         </Route>
-
-
+        <Route>
+          {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
+        </Route>
+      </Switch>
       <CurrentUserContext.Provider value={currentUser}>
-
-        <Main 
-          onEditAvatar={handleEditAvatarClick}
-          onEditProfile={handleEditProfileClick}
-          onAddPlace={handleAddPlaceClick}
-          onCardClick={handleCardClick}
-          onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
-          cards={cards}
-        />
         <Footer />
         <PopupWithForm 
           className="popup popup_type_confirm"
@@ -174,7 +175,7 @@ export default function App() {
           isLoading={isLoading}
         />
       </CurrentUserContext.Provider>
-      </Switch>
+
     </div>  
   );
 }
