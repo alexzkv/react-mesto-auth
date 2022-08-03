@@ -9,5 +9,10 @@
   color: #000;
   background: #FFF;
   border-radius: 2px;
-  border: none
+  border: none;
+  cursor: pointer;
+}
+
+.register-login__button:hover {
+  opacity: 0.85;
 }

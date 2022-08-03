@@ -1,5 +1,5 @@
 import "../index.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, StrictMode } from "react";
 import { Redirect, Route, Switch } from 'react-router-dom';
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import api from "../utils/Api";
@@ -14,6 +14,7 @@ import AddPlacePopup from "./AddPlacePopup";
 import Register from "./Register";
 import Login from "./Login";
 import ProtectedRoute from "./ProtectedRoute";
+import InfoTooltip from "./InfoTooltip";
 
 export default function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
@@ -115,67 +116,70 @@ export default function App() {
   return (
     <div className="page">
       <Header />
-      <Switch>
-        <ProtectedRoute
-        exact path="/"
-        loggedIn={loggedIn}
-        component={Main}
-        onEditAvatar={handleEditAvatarClick}
-        onEditProfile={handleEditProfileClick}
-        onAddPlace={handleAddPlaceClick}
-        onCardClick={handleCardClick}
-        onCardLike={handleCardLike}
-        onCardDelete={handleCardDelete}
-        cards={cards}
-        >
-
-        </ProtectedRoute>
-        <Route path="/sign-up">
-          <Register />
-        </Route>
-        <Route path="/sign-in">
-          <Login />
-        </Route>
-        <Route>
-          {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
-        </Route>
-      </Switch>
-      <CurrentUserContext.Provider value={currentUser}>
-        <Footer />
-        <PopupWithForm 
-          className="popup popup_type_confirm"
-          name="confirm"
-          title="Вы уверены?"
-          ariaLabel="Да"
-          textButton="Да"
-          onClose={closeAllPopups}
-        >
-        </PopupWithForm>
-        <ImagePopup
-          name={"open-card"}
-          card={selectedCard}
-          onClose={closeAllPopups}
-        />
-        <EditProfilePopup
-          isOpen={isEditProfilePopupOpen}
-          onClose={closeAllPopups}
-          onUpdateUser={handleUpdateUser}
-          isLoading={isLoading}
-        />
-        <EditAvatarPopup 
-          isOpen={isEditAvatarPopupOpen} 
-          onClose={closeAllPopups} 
-          onUpdateAvatar={handleUpdateAvatar}
-          isLoading={isLoading}
-        />
-        <AddPlacePopup
-          isOpen={isAddPlacePopupOpen} 
-          onClose={closeAllPopups} 
-          onAddPlace={handleAddPlaceSubmit}
-          isLoading={isLoading}
-        />
-      </CurrentUserContext.Provider>
-
+        <StrictMode>
+          <Switch>
+            <ProtectedRoute
+            exact path="/"
+            loggedIn={loggedIn}
+            component={Main}
+            onEditAvatar={handleEditAvatarClick}
+            onEditProfile={handleEditProfileClick}
+            onAddPlace={handleAddPlaceClick}
+            onCardClick={handleCardClick}
+            onCardLike={handleCardLike}
+            onCardDelete={handleCardDelete}
+            cards={cards}
+            >
+            </ProtectedRoute>
+            <Route path="/sign-up">
+              <Register />
+            </Route>
+            <Route path="/sign-in">
+              <Login />
+            </Route>
+            <Route>
+              {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
+            </Route>
+          </Switch>
+          <CurrentUserContext.Provider value={currentUser}>
+            <Footer />
+            <PopupWithForm 
+              className="popup popup_type_confirm"
+              name="confirm"
+              title="Вы уверены?"
+              ariaLabel="Да"
+              textButton="Да"
+              onClose={closeAllPopups}
+            >
+            </PopupWithForm>
+            <ImagePopup
+              name={"open-card"}
+              card={selectedCard}
+              onClose={closeAllPopups}
+            />
+            <EditProfilePopup
+              isOpen={isEditProfilePopupOpen}
+              onClose={closeAllPopups}
+              onUpdateUser={handleUpdateUser}
+              isLoading={isLoading}
+            />
+            <EditAvatarPopup 
+              isOpen={isEditAvatarPopupOpen} 
+              onClose={closeAllPopups} 
+              onUpdateAvatar={handleUpdateAvatar}
+              isLoading={isLoading}
+            />
+            <AddPlacePopup
+              isOpen={isAddPlacePopupOpen} 
+              onClose={closeAllPopups} 
+              onAddPlace={handleAddPlaceSubmit}
+              isLoading={isLoading}
+            />
+            <InfoTooltip 
+            
+            />
+          </CurrentUserContext.Provider>
+        </StrictMode>
     </div>  
   );
 }

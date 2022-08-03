@@ -1,0 +1,13 @@
+.header__status {
+  margin-top: 51px;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.22;
+  text-align: right;
+  color: #FFF;
+  text-decoration: none
+}
+
+.header__status:hover {
+  opacity: 0.6;
+}
