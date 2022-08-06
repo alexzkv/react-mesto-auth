@@ -1,8 +1,9 @@
 import "../index.css";
 import { useState, useEffect, StrictMode } from "react";
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import CurrentUserContext from "../contexts/CurrentUserContext";
-import api from "../utils/Api";
+import { api } from "../utils/api";
+import * as auth from '../utils/auth';
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
@@ -25,6 +26,11 @@ export default function App() {
   const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
+  const history = useHistory();
+  const [userInfo, setUserInfo] = useState({
+    email: '',
+    password: ''
+  });
   const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen ||
   isAddPlacePopupOpen || selectedCard;
 
@@ -113,32 +119,65 @@ export default function App() {
     .finally(() => setIsLoading(false));
   }
 
+  const tockenChek = () => {
+    const jwt = localStorage.getItem('jwt');
+    if (!jwt) {
+      return;
+    }
+
+    auth
+      .getContent(jwt)
+      .then(({ email, password }) => {
+        setLoggedIn(true);
+        setUserInfo({ email, password });
+      });
+    }
+
+  useEffect(() => {
+    tockenChek();
+  }, []);
+
+  useEffect(() => {
+    if (loggedIn) {
+      history.push('/');
+    }
+  }, [history, loggedIn]);
+
+  const onRegister = (data) => {
+    return auth
+      .register(data)
+      .then(() => {
+        history.push('/signin');
+      });
+  }
+
   return (
     <div className="page">
       <Header />
         <StrictMode>
           <Switch>
             <ProtectedRoute
-            exact path="/"
-            loggedIn={loggedIn}
-            component={Main}
-            onEditAvatar={handleEditAvatarClick}
-            onEditProfile={handleEditProfileClick}
-            onAddPlace={handleAddPlaceClick}
-            onCardClick={handleCardClick}
-            onCardLike={handleCardLike}
-            onCardDelete={handleCardDelete}
-            cards={cards}
+              exact path="/"
+              loggedIn={loggedIn}
+              userData={userInfo}
+              component={Main}
+              onEditAvatar={handleEditAvatarClick}
+              onEditProfile={handleEditProfileClick}
+              onAddPlace={handleAddPlaceClick}
+              onCardClick={handleCardClick}
+              onCardLike={handleCardLike}
+              onCardDelete={handleCardDelete}
+              cards={cards}
             >
             </ProtectedRoute>
-            <Route path="/sign-up">
-              <Register />
+            <Route path="/signup">
+              <Register onRegister={onRegister}/>
             </Route>
-            <Route path="/sign-in">
+            <Route path="/signin">
               <Login />
             </Route>
             <Route>
-              {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
+              {loggedIn ? <Redirect to="/" /> : <Redirect to="/signin" />}
             </Route>
           </Switch>
           <CurrentUserContext.Provider value={currentUser}>

@@ -10,11 +10,11 @@ export default function Header() {
         alt="Лого Место Россия"
         className="header__logo"
       />
-      <Route path="/sign-up">
-        <Link to="/sign-in" className="header__status">Войти</Link>
+      <Route path="/signup">
+        <Link to="/signin" className="header__status">Войти</Link>
       </Route>
-      <Route path="/sign-in">
-        <Link to="/sign-up" className="header__status">Регистрация</Link>
+      <Route path="/signin">
+        <Link to="/signup" className="header__status">Регистрация</Link>
       </Route>
     </header>
   );
