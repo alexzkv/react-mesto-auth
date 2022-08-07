@@ -17,7 +17,7 @@ export default function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isLoa
     <PopupWithForm
       name="update-avatar"
       title="Обновить аватар"
-      aria-label="Закрыть"
+      aria-label="Кнопка закрытия"
       textButton={isLoading ? "Сохранение..." : "Создать"}
       isOpen={isOpen}
       onClose={onClose}

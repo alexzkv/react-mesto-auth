@@ -25,7 +25,7 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser, isLoad
     <PopupWithForm
       name="profile"
       title="Редактировать профиль"
-      aria-label="Закрыть"
+      aria-label="Кнопка закрытия"
       textButton={isLoading ? "Сохранение..." : "Создать"}
       isOpen={isOpen}
       onClose={onClose}

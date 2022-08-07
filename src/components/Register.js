@@ -25,13 +25,13 @@ export default function Register({ onRegister }) {
 
   return (
     <div className="register-login">
-      <h1 className="register-login__title">Регистрация</h1>
+      <h2 className="register-login__title">Регистрация</h2>
       <form className="register-login__form" onSubmit={hadleSubmit}>
         <input
           required
           id="email"
           name="email"
-          type="text"
+          type="email"
           autoComplete="email"
           placeholder="Email"
           className="register-login__input"
