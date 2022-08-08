@@ -31,7 +31,7 @@ export default function App() {
   const [userInfo, setUserInfo] = useState({});
   const history = useHistory();
   const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen ||
-  isAddPlacePopupOpen || selectedCard;
+  isAddPlacePopupOpen || selectedCard || isInfoTooltip;
 
   useEffect(() => {
     if (loggedIn) {
@@ -72,7 +72,7 @@ export default function App() {
       }
   }, [history]);
 
-  const onRegister = (data) => {
+  const handleRegister = (data) => {
     auth.register(data)
       .then(() => {
         setIsInfoTooltip(true);
@@ -86,7 +86,7 @@ export default function App() {
       });
   }
   
-  const onLogin = (data) => {
+  const handleLogin = (data) => {
     auth
       .authorize(data)
       .then((res) => {
@@ -100,6 +100,12 @@ export default function App() {
         setIsInfoTooltip(true);
         setStatusInfoTooltip(false);
       });
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem('jwt');
+    setLoggedIn('false');
+    history.push('/sign-in');
   }
 
   function handleEditAvatarClick() { setIsEditAvatarPopupOpen(true) }
@@ -169,8 +175,10 @@ export default function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <Header 
-          userData={userInfo} 
-          loggedIn={loggedIn}/>
+          userInfo={userInfo} 
+          loggedIn={loggedIn}
+          handleLogout={handleLogout}
+        />
         <Switch>
           <ProtectedRoute
             exact path="/"
@@ -185,10 +193,10 @@ export default function App() {
             cards={cards}
           />
           <Route path="/sign-up">
-            <Register onRegister={onRegister}/>
+            <Register onRegister={handleRegister}/>
           </Route>
           <Route path="/sign-in">
-            <Login onLogin={onLogin}/>
+            <Login onLogin={handleLogin}/>
           </Route>
           <Route>
             {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}

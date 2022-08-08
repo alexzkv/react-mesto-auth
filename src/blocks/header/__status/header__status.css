@@ -1,4 +1,7 @@
 .header__status {
+  margin: 0;
+  padding: 0;
+  margin-left: 24px;
   margin-top: 51px;
   font-weight: 400;
   font-size: 18px;
