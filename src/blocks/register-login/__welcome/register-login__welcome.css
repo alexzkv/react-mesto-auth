@@ -8,3 +8,15 @@
   color: #FFF;
   text-decoration: none
 }
+
+@media screen and (max-width: 1023px) {
+  .register-login__welcome {
+    
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .register-login__welcome {
+    margin: 20px auto 40px;
+  }
+}

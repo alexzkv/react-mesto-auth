@@ -5,3 +5,16 @@
   line-height: 1.2;
   text-align: center;
 }
+
+@media screen and (max-width: 1023px) {
+  .register-login__title {
+    margin: 50px auto;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .register-login__title {
+    margin: 40px auto 40px;
+    font-size: 20px;
+  }
+}

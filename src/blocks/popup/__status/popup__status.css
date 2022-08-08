@@ -8,3 +8,10 @@
   text-align: center;
   color: #000;
   }
+
+  @media screen and (max-width: 767px) {
+    .popup__status {
+      margin: 40px 18px 0;
+      font-size: 20px;
+    }
+  }

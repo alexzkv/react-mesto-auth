@@ -16,3 +16,19 @@
 .register-login__button:hover {
   opacity: 0.85;
 }
+
+@media screen and (max-width: 1023px) {
+  .register-login__button {
+    max-width: 310px;
+    font-size: 17px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .register-login__button {
+    margin: 143px auto 30px;
+    padding: 14px 35px;
+    max-width: 260px;
+    font-size: 16px;
+  }
+}
