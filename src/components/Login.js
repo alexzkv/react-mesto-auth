@@ -14,18 +14,34 @@ export default function Login({ onLogin }) {
     });
   }
 
-  const hadleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    onLogin(
-      loginData.email,
-      loginData.password
-    );
+    onLogin({
+      email: loginData.email,
+      password: loginData.password
+    });
   }
+
+  // const [email, setEmail] =useState('');
+  // const [password, setPassword] =useState('');
+
+  // const handleChangeEmail = (e) => {
+  //   setEmail(e.target.value);
+  // }
+
+  // const handleChangePassword = (e) => {
+  //   setPassword(e.target.value);
+  // }
+  
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   onLogin({ email, password });
+  // }
 
   return (
     <div className="register-login">
       <h2 className="register-login__title">Вход</h2>
-      <form className="register-login__form" onSubmit={hadleSubmit}>
+      <form className="register-login__form" onSubmit={handleSubmit}>
         <input 
           required
           id="login" 

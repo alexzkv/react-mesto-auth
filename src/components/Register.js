@@ -56,8 +56,8 @@ export default function Register({ onRegister }) {
         </button>
       </form>
       <p className="register-login__welcome">Уже зарегистрированы?&nbsp;
-        <Route path="/signup">
-          <Link to="/signin" className="register-login__welcome register-login__welcome_enter">Войти</Link>
+        <Route path="/sign-up">
+          <Link to="/sign-in" className="register-login__welcome register-login__welcome_enter">Войти</Link>
         </Route>
       </p>
     </div>

@@ -68,39 +68,38 @@ export default function App() {
           setUserInfo(data.data);
           history.push('/');
         })
-        .catch(err => console.log(err))
+        .catch(err => console.log(err));
       }
   }, [history]);
 
   const onRegister = (data) => {
     auth.register(data)
-    .then(() => {
-      setIsInfoTooltip(true);
-      setStatusInfoTooltip(true);
-      history.push('/signin');
-    })
-    .catch((err) => {
-      console.log(err);
-      setIsInfoTooltip(true);
-      setStatusInfoTooltip(false);
-    });
+      .then(() => {
+        setIsInfoTooltip(true);
+        setStatusInfoTooltip(true);
+        history.push('/sign-in');
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsInfoTooltip(true);
+        setStatusInfoTooltip(false);
+      });
   }
   
-  const onLogin = ({ email, password }) => {
-    auth.authorize({ email, password })
-    .then(({ token }) => {
-      localStorage.setItem('jwt', token);
-      setUserInfo({ email, password });
-      setLoggedIn(true);
-      setIsInfoTooltip(true);
-      setStatusInfoTooltip(true);
-      history.push('/');
-    })
-    .catch((err) => {
-      console.log(err);
-      setIsInfoTooltip(true);
-      setStatusInfoTooltip(false);
-    });
+  const onLogin = (data) => {
+    auth
+      .authorize(data)
+      .then((res) => {
+        localStorage.setItem('jwt', res.token);
+        setUserInfo(data);
+        setLoggedIn(true);
+        history.push('/');
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsInfoTooltip(true);
+        setStatusInfoTooltip(false);
+      });
   }
 
   function handleEditAvatarClick() { setIsEditAvatarPopupOpen(true) }
@@ -169,13 +168,14 @@ export default function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header />
+        <Header 
+          userData={userInfo} 
+          loggedIn={loggedIn}/>
         <Switch>
           <ProtectedRoute
             exact path="/"
             component={Main}
             loggedIn={loggedIn}
-            userData={userInfo}
             onEditAvatar={handleEditAvatarClick}
             onEditProfile={handleEditProfileClick}
             onAddPlace={handleAddPlaceClick}
@@ -184,14 +184,14 @@ export default function App() {
             onCardDelete={handleCardDelete}
             cards={cards}
           />
-          <Route path="/signup">
+          <Route path="/sign-up">
             <Register onRegister={onRegister}/>
           </Route>
-          <Route path="/signin">
+          <Route path="/sign-in">
             <Login onLogin={onLogin}/>
           </Route>
           <Route>
-            {loggedIn ? <Redirect to="/" /> : <Redirect to="/signin" />}
+            {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
           </Route>
         </Switch>
         <Footer />
