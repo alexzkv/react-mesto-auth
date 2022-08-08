@@ -2,7 +2,7 @@ import "../index.css";
 import { useState, useEffect } from "react";
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import CurrentUserContext from "../contexts/CurrentUserContext";
-import { api } from "../utils/api";
+import api from "../utils/api";
 import * as auth from '../utils/auth';
 import Header from "./Header";
 import Main from "./Main";
@@ -28,22 +28,80 @@ export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [isInfoTooltip, setIsInfoTooltip] = useState(false);
   const [statusInfoTooltip, setStatusInfoTooltip] = useState(false);
+  const [userInfo, setUserInfo] = useState({});
   const history = useHistory();
-  const [userInfo, setUserInfo] = useState({
-    email: '',
-    password: ''
-  });
   const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen ||
   isAddPlacePopupOpen || selectedCard;
 
   useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getCards()])
-      .then(([userInfo, cards]) => {
-        setCurrentUser(userInfo);
-        setCards(cards);
-      })
-      .catch(err => console.log(err));
-  }, []);
+    if (loggedIn) {
+      Promise.all([api.getUserInfo(), api.getCards()])
+        .then(([userInfo, cards]) => {
+          setCurrentUser(userInfo);
+          setCards(cards);
+        })
+        .catch(err => console.log(err));
+    }
+  }, [loggedIn]);
+  
+  useEffect(() => {
+    function closeByEscape(evt) {
+      if(evt.key === 'Escape') {
+        closeAllPopups();
+      }
+    }
+    if(isOpen) {
+      document.addEventListener('keydown', closeByEscape);
+      return () => {
+        document.removeEventListener('keydown', closeByEscape);
+      }
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
+      auth
+        .getContent(jwt)
+        .then((data) => {
+          setLoggedIn(true);
+          setUserInfo(data.data);
+          history.push('/');
+        })
+        .catch(err => console.log(err))
+      }
+  }, [history]);
+
+  const onRegister = (data) => {
+    auth.register(data)
+    .then(() => {
+      setIsInfoTooltip(true);
+      setStatusInfoTooltip(true);
+      history.push('/signin');
+    })
+    .catch((err) => {
+      console.log(err);
+      setIsInfoTooltip(true);
+      setStatusInfoTooltip(false);
+    });
+  }
+  
+  const onLogin = ({ email, password }) => {
+    auth.authorize({ email, password })
+    .then(({ token }) => {
+      localStorage.setItem('jwt', token);
+      setUserInfo({ email, password });
+      setLoggedIn(true);
+      setIsInfoTooltip(true);
+      setStatusInfoTooltip(true);
+      history.push('/');
+    })
+    .catch((err) => {
+      console.log(err);
+      setIsInfoTooltip(true);
+      setStatusInfoTooltip(false);
+    });
+  }
 
   function handleEditAvatarClick() { setIsEditAvatarPopupOpen(true) }
   function handleEditProfileClick() { setIsEditProfilePopupOpen(true) }
@@ -57,20 +115,6 @@ export default function App() {
     setIsInfoTooltip(false);
     setSelectedCard(null);
   }
-
-  useEffect(() => {
-    function closeByEscape(evt) {
-      if(evt.key === 'Escape') {
-        closeAllPopups();
-      }
-    }
-    if(isOpen) {
-      document.addEventListener('keydown', closeByEscape);
-      return () => {
-        document.removeEventListener('keydown', closeByEscape);
-      }
-    }
-  }, [isOpen]) 
 
   function handleCardLike(card) {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
@@ -120,54 +164,6 @@ export default function App() {
     })
     .catch(err => console.log(err))
     .finally(() => setIsLoading(false));
-  }
-
-  const tockenChek = () => {
-    const jwt = localStorage.getItem('jwt');
-    if (!jwt) {
-      return;
-    }
-
-    auth
-      .getContent(jwt)
-      .then(({ email }) => {
-        setLoggedIn(true);
-        setUserInfo({ email });
-      });
-    }
-
-  useEffect(() => {
-    tockenChek();
-  }, []);
-
-  useEffect(() => {
-    if (loggedIn) {
-      history.push('/');
-    }
-  }, [history, loggedIn]);
-
-  const onRegister = (data) => {
-    auth.register(data)
-    .then(() => {
-      setIsInfoTooltip(true);
-      setStatusInfoTooltip(true);
-      history.push('/signin');
-    })
-    .catch((err) => {
-      console.log(err);
-      setIsInfoTooltip(true);
-      setStatusInfoTooltip(false);
-    })
-  }
-  
-  const onLogin = (data) => {
-   auth.authorize(data)
-    .then(({ token }) => {
-      setUserInfo(data);
-      setLoggedIn(true);
-      localStorage.setItem('jwt', token);
-      history.push('/');
-    });
   }
 
   return (

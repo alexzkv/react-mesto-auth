@@ -7,7 +7,7 @@ export default function Login({ onLogin }) {
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target.value;
     setLoginData({
       ...loginData,
       [name]: value
@@ -16,9 +16,6 @@ export default function Login({ onLogin }) {
 
   const hadleSubmit = (e) => {
     e.preventDefault();
-    if (!loginData.email || !loginData.password) {
-      return;
-    }
     onLogin(
       loginData.email,
       loginData.password
@@ -38,7 +35,7 @@ export default function Login({ onLogin }) {
           placeholder="Email"
           className="register-login__input"
           onChange={handleChange}
-          value={loginData.email || ''}
+          // value={loginData.email || ''}
         />
         <input
           required
@@ -49,7 +46,7 @@ export default function Login({ onLogin }) {
           placeholder="Пароль"
           className="register-login__input"
           onChange={handleChange}
-          value={loginData.password || ''}
+          // value={loginData.password || ''}
         />
         <button type="submit" className="register-login__button">Войти</button>
       </form>

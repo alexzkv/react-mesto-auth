@@ -10,8 +10,8 @@ export default function InfoTooltip({ isOpen, onClose, status }) {
           <p className="popup__status">
             {status ? 'Вы успешно зарегистрировались!' : 'Что-то пошло не так!Попробуйте ещё раз.'}
           </p>
+          <button onClick={onClose} aria-label="Кнопка закрытия" type="button" className="popup__close"></button>
         </div>
-        <button onClick={onClose} aria-label="Кнопка закрытия" type="button" className="popup__close"></button>
       </div>
     </div>
   ) 
