@@ -23,7 +23,13 @@
 
 @media screen and (max-width: 767px) {
   .header__status {
-    margin-top: 40px;
+    margin-top: 10px;
+    margin-left: 0;
     font-size: 14px;
+  }
+
+  .header__status:last-child {
+    margin-top: 18px;
+    margin-bottom: 40px;
   }
 }

@@ -5,16 +5,16 @@ export default function Card({ card, onCardClick, onCardLike, onCardDelete }) {
   const currentUser = useContext(CurrentUserContext);
   const isOwn = card.owner._id === currentUser._id;
   const cardDeleteButtonClassName = (
-    `card__delete ${ isOwn ? "" : "card__delete_disabled" }`
+    `card__delete ${ isOwn ? '' : "card__delete_disabled" }`
   );
   const isLiked = card.likes.some(i => i._id === currentUser._id);
   const cardLikeButtonClassName = (
-    `card__like-btn ${ isLiked ? "card__like-btn_active" : "" }`
+    `card__like-btn ${isLiked ? "card__like-btn_active" : ''}`
   );
 
-  function handleClick() { onCardClick(card) }
-  function handleLikeClick() { onCardLike(card) }
-  function handleDeleteClick() { onCardDelete(card) }
+  const handleClick = () => { onCardClick(card) }
+  const handleLikeClick = () => { onCardLike(card) }
+  const handleDeleteClick = () => { onCardDelete(card) }
 
   return (
     <li className="card">

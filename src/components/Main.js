@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import Card from "./Card";
 import CurrentUserContext from "../contexts/CurrentUserContext";
+import Card from "./Card";
 
 export default function Main({ 
   onEditAvatar, 
@@ -40,7 +40,7 @@ export default function Main({
         />
       </section>
       <section className="elements">
-        <ul className="element-grid">
+        <ul className="elements__grid">
           {cards.map((item) => {
             return (
               <Card 

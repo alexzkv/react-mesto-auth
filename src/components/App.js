@@ -2,12 +2,11 @@ import "../index.css";
 import { useState, useEffect } from "react";
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import CurrentUserContext from "../contexts/CurrentUserContext";
-import api from "../utils/api";
 import * as auth from '../utils/auth';
+import api from "../utils/api";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
-// import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
@@ -63,9 +62,9 @@ export default function App() {
     if (jwt) {
       auth
         .getContent(jwt)
-        .then((data) => {
+        .then(({ data }) => {
           setLoggedIn(true);
-          setUserInfo(data.data);
+          setUserInfo(data);
           history.push('/');
         })
         .catch(err => console.log(err));
@@ -89,8 +88,8 @@ export default function App() {
   const handleLogin = (data) => {
     auth
       .authorize(data)
-      .then((res) => {
-        localStorage.setItem('jwt', res.token);
+      .then(({ token }) => {
+        localStorage.setItem('jwt', token);
         setUserInfo(data);
         setLoggedIn(true);
         history.push('/');
@@ -108,12 +107,12 @@ export default function App() {
     history.push('/sign-in');
   }
 
-  function handleEditAvatarClick() { setIsEditAvatarPopupOpen(true) }
-  function handleEditProfileClick() { setIsEditProfilePopupOpen(true) }
-  function handleAddPlaceClick() { setIsAddPlacePopupOpen(true) }
-  function handleCardClick(card) { setSelectedCard(card) }
+  const handleEditAvatarClick = () => { setIsEditAvatarPopupOpen(true) }
+  const handleEditProfileClick = () => { setIsEditProfilePopupOpen(true) }
+  const handleAddPlaceClick = () => { setIsAddPlacePopupOpen(true) }
+  const handleCardClick = (card) => { setSelectedCard(card) }
   
-  function closeAllPopups() {
+  const closeAllPopups = () =>  {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
@@ -121,24 +120,24 @@ export default function App() {
     setSelectedCard(null);
   }
 
-  function handleCardLike(card) {
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
-    api.changeLikeCardStatus(card._id, !isLiked)
+  const handleCardLike = ({ likes, _id }) => {
+    const isLiked = likes.some(i => i._id === currentUser._id);
+    api.changeLikeCardStatus(_id, !isLiked)
       .then((newCard) => {
-        setCards(state => state.map(c => c._id === card._id ? newCard : c));
+        setCards(state => state.map(c => c._id === _id ? newCard : c));
       })
       .catch(err => console.log(err));
   }
 
-  function handleCardDelete(card) {
-    api.deleteCard(card._id)
+  const handleCardDelete = ({ _id }) => {
+    api.deleteCard(_id)
       .then(() => {
-        setCards(state => state.filter(d => d._id !== card._id));
+        setCards(state => state.filter(d => d._id !== _id));
       })
       .catch(err => console.log(err));
   }
 
-  function handleUpdateUser({ name, about }) {
+  const handleUpdateUser = ({ name, about }) => {
     setIsLoading(true);
     api.setUserInfo({ name, about })
       .then((userInfo) => {
@@ -149,7 +148,7 @@ export default function App() {
       .finally(() => setIsLoading(false));
   }
 
-  function handleUpdateAvatar({ avatar }) {
+  const handleUpdateAvatar = ({ avatar }) => {
     setIsLoading(true);
     api.setUserAvatar({ avatar })
       .then((userInfo) => {
@@ -160,7 +159,7 @@ export default function App() {
       .finally(() => setIsLoading(false));
   }
 
-  function handleAddPlaceSubmit(item) {
+  const handleAddPlaceSubmit = (item) => {
     setIsLoading(true);
     api.setCard(item)
     .then((newCard) => {
@@ -181,7 +180,7 @@ export default function App() {
         />
         <Switch>
           <ProtectedRoute
-            exact path="/"
+            exact path='/'
             component={Main}
             loggedIn={loggedIn}
             onEditAvatar={handleEditAvatarClick}
@@ -192,26 +191,17 @@ export default function App() {
             onCardDelete={handleCardDelete}
             cards={cards}
           />
-          <Route path="/sign-up">
-            <Register onRegister={handleRegister}/>
+          <Route path='/sign-up'>
+            <Register onRegister={handleRegister} />
           </Route>
-          <Route path="/sign-in">
-            <Login onLogin={handleLogin}/>
+          <Route path='/sign-in'>
+            <Login onLogin={handleLogin} />
           </Route>
           <Route>
-            {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
+            {loggedIn ? <Redirect to='/' /> : <Redirect to='/sign-in' />}
           </Route>
         </Switch>
         <Footer />
-        {/* <PopupWithForm 
-          className="popup popup_type_confirm"
-          name="confirm"
-          title="Вы уверены?"
-          ariaLabel="Да"
-          textButton="Да"
-          onClose={closeAllPopups}
-        >
-        </PopupWithForm> */}
         <ImagePopup
           name={"open-card"}
           card={selectedCard}

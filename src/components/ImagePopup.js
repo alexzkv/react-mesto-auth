@@ -10,11 +10,11 @@ export default function ImagePopup({ card, name, onClose }) {
         />
         <figure className="popup__big-img">
           <img 
-            src={card ? card.link : ""}
-            alt={card ? card.name : ""}
+            src={card ? card.link : ''}
+            alt={card ? card.name : ''}
             className="popup__image"
           />
-          <p className="popup__image-title">{card ? card.name : ""}</p>
+          <p className="popup__image-title">{card ? card.name : ''}</p>
         </figure>
       </div>
     </div>

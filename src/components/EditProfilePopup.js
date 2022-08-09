@@ -1,11 +1,11 @@
 import { useState, useContext, useEffect } from "react";
-import PopupWithForm from "./PopupWithForm";
 import CurrentUserContext from "../contexts/CurrentUserContext";
+import PopupWithForm from "./PopupWithForm";
 
 export default function EditProfilePopup({ isOpen, onClose, onUpdateUser, isLoading }) {
   const currentUser = useContext(CurrentUserContext);
-  const[name, setName] = useState("");
-  const[description, setDescription] = useState("");
+  const[name, setName] = useState('');
+  const[description, setDescription] = useState('');
 
   useEffect(() => {
     if (currentUser) {
@@ -14,9 +14,9 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser, isLoad
     }
   }, [currentUser, isOpen]);
 
-  function handleChangeName(e) { setName(e.target.value) }
-  function handleChangeDescription(e) { setDescription(e.target.value) }
-  function handleSubmit(e) {
+  const handleChangeName = (e) => { setName(e.target.value) }
+  const handleChangeDescription = (e) => { setDescription(e.target.value) }
+  const handleSubmit = (e) => {
     e.preventDefault();
     onUpdateUser({ name, about: description });
   }
@@ -26,7 +26,7 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser, isLoad
       name="profile"
       title="Редактировать профиль"
       aria-label="Кнопка закрытия"
-      textButton={isLoading ? "Сохранение..." : "Создать"}
+      textButton={isLoading ? 'Сохранение...' : 'Создать'}
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}

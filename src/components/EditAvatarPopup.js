@@ -8,7 +8,7 @@ export default function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isLoa
     avatarRef.current.value = "";
   }, [isOpen]);
 
-  function handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
     onUpdateAvatar({ avatar: avatarRef.current.value });
   }
@@ -18,7 +18,7 @@ export default function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isLoa
       name="update-avatar"
       title="Обновить аватар"
       aria-label="Кнопка закрытия"
-      textButton={isLoading ? "Сохранение..." : "Создать"}
+      textButton={isLoading ? 'Сохранение...' : 'Создать'}
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}

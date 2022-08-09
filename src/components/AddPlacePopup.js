@@ -5,30 +5,30 @@ export default function AddPlacePopup({
   isOpen, 
   onClose, 
   onAddPlace, 
-  isLoading 
+  isLoading,
 }) {
-  const [link, setLink] = useState("");
-  const [title, setTitle] = useState("");
+  const [link, setLink] = useState('');
+  const [title, setTitle] = useState('');
 
   useEffect(() => {
     if (isOpen) {
-      setLink("");
-      setTitle("");
+      setLink('');
+      setTitle('');
     }
   }, [isOpen]);
 
-  function handleChangeLink(e) { setLink(e.target.value) }
-  function handleChangeTitle(e) { setTitle(e.target.value) }
-  function handleSubmit(e) {
+  const handleChangeLink = (e) => { setLink(e.target.value) }
+  const handleChangeTitle = (e) => { setTitle(e.target.value) }
+  const handleSubmit = (e) => {
     e.preventDefault();
     onAddPlace({ link: link, name: title });
   }
 
-   return (
+  return (
     <PopupWithForm
       name="add-card"
       title="Новое место"
-      ariaLabel="Создать"
+      aria-label="Создать"
       textButton={isLoading ? "Сохранение..." : "Создать"}
       isOpen={isOpen}
       onClose={onClose}
@@ -43,7 +43,7 @@ export default function AddPlacePopup({
         required
         minLength={2}
         maxLength={30}
-        value={title || ""}
+        value={title || ''}
         onChange={handleChangeTitle}
         className="popup__input popup__input_card_name"
       />
@@ -54,7 +54,7 @@ export default function AddPlacePopup({
         type="url"
         placeholder="Ссылка на картинку"
         required
-        value={link || ""}
+        value={link || ''}
         onChange={handleChangeLink}
         className="popup__input popup__input_card_link"
       />
