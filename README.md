@@ -6,17 +6,13 @@
 
 ***
 
-Проект был запущен с помощью [Create React App](https://github.com/facebook/create-react-app ).
+Запускаем проект с помощью [Create React App](https://github.com/facebook/create-react-app ).
 
-Установка и запуск
+```git clone https://github.com/alexzkv/mesto-react.git``` - клонирование проекта
 
 ```npm i``` - установка зависимостей
 
-```npm run start``` - запуск сервера
-
-```npm run build``` - запуск сборки проекта
-
-```npm run deploy``` - публикация сборки на github pages
+```npm start``` - запуск сервера
 
 ***
 
