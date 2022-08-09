@@ -26,7 +26,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [isInfoTooltip, setIsInfoTooltip] = useState(false);
-  const [statusInfoTooltip, setStatusInfoTooltip] = useState(false);
+  const [isInfoTooltipSuccess, setIsInfoTooltipSuccess] = useState(false);
   const [userInfo, setUserInfo] = useState({});
   const history = useHistory();
   const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen ||
@@ -75,13 +75,13 @@ export default function App() {
     auth.register(data)
       .then(() => {
         setIsInfoTooltip(true);
-        setStatusInfoTooltip(true);
+        setIsInfoTooltipSuccess(true);
         history.push('/sign-in');
       })
       .catch((err) => {
         console.log(err);
         setIsInfoTooltip(true);
-        setStatusInfoTooltip(false);
+        setIsInfoTooltipSuccess(false);
       });
   }
   
@@ -97,7 +97,7 @@ export default function App() {
       .catch((err) => {
         console.log(err);
         setIsInfoTooltip(true);
-        setStatusInfoTooltip(false);
+        setIsInfoTooltipSuccess(false);
       });
   }
 
@@ -228,7 +228,7 @@ export default function App() {
         <InfoTooltip 
           isOpen={isInfoTooltip}
           onClose={closeAllPopups}
-          status={statusInfoTooltip}
+          success={isInfoTooltipSuccess}
         />
       </div> 
     </CurrentUserContext.Provider>
