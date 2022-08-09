@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import * as auth from '../utils/auth';
-import api from "../utils/api";
+import api from "../utils/Api";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
@@ -203,7 +203,7 @@ export default function App() {
         </Switch>
         <Footer />
         <ImagePopup
-          name={"open-card"}
+          name="open-card"
           card={selectedCard}
           onClose={closeAllPopups}
         />

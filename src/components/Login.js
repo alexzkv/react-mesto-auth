@@ -35,7 +35,7 @@ export default function Login({ onLogin }) {
           required
           id="log-password"
           name="log-password"
-          type="text"
+          type="password"
           autoComplete="current-password"
           placeholder="Пароль"
           className="register-login__input"
