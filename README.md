@@ -2,6 +2,8 @@
 
 Одностраничный сайт адаптированный под все типы устройств с возможностью делиться своими фотографиями.
 
+**[Ссылка на проект](https://alexzkv.github.io/react-mesto-auth/)**
+
 [Ссылка на макет проекта в Figma](https://www.figma.com/file/5H3gsn5lIGPwzBPby9jAOo/Sprint-14-RU?node-id=0%3A1)
 
 ***
