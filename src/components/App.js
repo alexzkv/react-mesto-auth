@@ -11,6 +11,7 @@ import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
+import PopupWithConfirmation from "./PopupWithConfirmation";
 import Register from "./Register";
 import Login from "./Login";
 import ProtectedRoute from "./ProtectedRoute";
@@ -24,13 +25,14 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [deletingСard, setDeletingСard] = useState(null);
   const [loggedIn, setLoggedIn] = useState(false);
   const [isInfoTooltip, setIsInfoTooltip] = useState(false);
   const [isInfoTooltipSuccess, setIsInfoTooltipSuccess] = useState(false);
   const [userInfo, setUserInfo] = useState({});
   const history = useHistory();
   const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen ||
-  isAddPlacePopupOpen || selectedCard || isInfoTooltip;
+  isAddPlacePopupOpen || selectedCard || setDeletingСard || isInfoTooltip;
 
   useEffect(() => {
     if (loggedIn) {
@@ -111,6 +113,7 @@ export default function App() {
   const handleEditProfileClick = () => { setIsEditProfilePopupOpen(true) }
   const handleAddPlaceClick = () => { setIsAddPlacePopupOpen(true) }
   const handleCardClick = (card) => { setSelectedCard(card) }
+  const handleCardDelete = (card) => { setDeletingСard(card) }
   
   const closeAllPopups = () =>  {
     setIsEditAvatarPopupOpen(false);
@@ -118,6 +121,7 @@ export default function App() {
     setIsAddPlacePopupOpen(false);
     setIsInfoTooltip(false);
     setSelectedCard(null);
+    setDeletingСard(null);
   }
 
   const handleCardLike = ({ likes, _id }) => {
@@ -129,12 +133,15 @@ export default function App() {
       .catch(err => console.log(err));
   }
 
-  const handleCardDelete = ({ _id }) => {
-    api.deleteCard(_id)
+  const handleСonfirmDelete = (card) => { 
+    setIsLoading(true);
+    api.deleteCard(card._id)
       .then(() => {
-        setCards(state => state.filter(d => d._id !== _id));
+        setCards(state => state.filter(d => d._id !== card._id));
+        closeAllPopups();
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err))
+    .finally(() => setIsLoading(false));
   }
 
   const handleUpdateUser = ({ name, about }) => {
@@ -223,6 +230,12 @@ export default function App() {
           isOpen={isAddPlacePopupOpen} 
           onClose={closeAllPopups} 
           onAddPlace={handleAddPlaceSubmit}
+          isLoading={isLoading}
+        />
+        <PopupWithConfirmation
+          card={deletingСard}
+          onClose={closeAllPopups}
+          onСonfirmDelete={handleСonfirmDelete}
           isLoading={isLoading}
         />
         <InfoTooltip 
